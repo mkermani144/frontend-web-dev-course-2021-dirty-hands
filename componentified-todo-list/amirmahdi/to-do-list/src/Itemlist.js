@@ -1,6 +1,3 @@
-import React from 'react';
-import './index.css';
-
 const Itemlist = (props) => {
     return(
         <div>
