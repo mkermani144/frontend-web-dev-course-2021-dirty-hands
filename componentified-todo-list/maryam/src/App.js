@@ -1,16 +1,17 @@
 import React, {useState} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Checkbox from '@material-ui/core/Checkbox';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import TextField from '@material-ui/core/TextField';
-import { Add, ArrowDownward, ArrowUpward } from '@material-ui/icons';
+import {
+  makeStyles,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+  Checkbox,
+  Typography,
+  IconButton,
+  ListItemSecondaryAction,
+  TextField
+} from '@material-ui/core';
+import {Add, ArrowDownward, ArrowUpward, DeleteIcon} from '@material-ui/icons';
 import './App.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,6 +21,11 @@ const useStyles = makeStyles((theme) => ({
     overflowX: 'hidden',
     backgroundPositionX: '100%',
     backgroundPositionY: '100%',
+    backgroundColor: '#3f3160',
+    margin: '40px auto',
+  },
+  body: {
+    backgroundColor: '#9266ff'
   },
   container:{
     width:'40%',
