@@ -11,36 +11,30 @@ const App = () => {
 
   const addToBotton = (event) => {
     const newTask = {
-      task: event.target.parentNode.childNodes[0].value,
+      task: inputValue,
       status: false,
     };
-    items.push(newTask);
-    setItem([...items]);
+
+    setItem([...items, newTask]);
   };
 
   const addToTop = (event) => {
     const newTask = {
-      task: event.target.parentNode.childNodes[0].value,
+      task: inputValue,
       status: false,
     };
-    items.unshift(newTask);
 
-    setItem((pervItem) => {
-      let newItem = [...pervItem];
-      return newItem;
-    });
+    setItem([newTask, ...items]);
   };
 
-  const checkBoxClicked = (e) => {
-    items[e.target.id].status = e.target.checked;
+  const checkBoxClicked = (e, index) => {
+    console.log(index);
+    items[index].status = e.target.checked;
     if (e.target.checked) {
-      const checked = items.splice(e.target.id, 1);
+      const checked = items.splice(index, 1);
       items.push(checked[0]);
     }
     setItem([...items]);
-
-    if (e.target.checked) {
-    }
   };
 
   const CreatList = () => {
@@ -48,28 +42,36 @@ const App = () => {
     return result;
   };
 
-  const DeleteTask = (e) => {
-    items.splice(e.target.id, 1);
+  const DeleteTask = (e, index) => {
+    items.splice(index, 1);
     setItem([...items]);
   };
   const List = (item) => {
     return (
       <li key={item[0]}>
-        <i className="fa fa-trash" onClick={DeleteTask} id={item[0]}></i>
+        <i
+          className="fa fa-trash"
+          onClick={(e) => DeleteTask(e, item[0])}
+          id={item[0]}
+        ></i>
         <input
           id={item[0]}
           type="checkbox"
-          onChange={checkBoxClicked}
+          onChange={(e) => checkBoxClicked(e, item[0])}
           checked={item[1].status}
         />
         <span>{item[1].task}</span>
       </li>
     );
   };
+  const [inputValue, setinputValue] = useState(0);
+  const InputValue = (e) => {
+    setinputValue(e.target.value);
+  };
 
   return (
     <div>
-      <input className="input" type="text" />
+      <input className="input" type="text" onChange={InputValue} />
       <button onClick={addToBotton}> add to bottom</button>
       <button onClick={addToTop}> add to top</button>
       <ul>{CreatList()} </ul>
