@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   makeStyles,
   ListItem,
@@ -18,17 +18,15 @@ const useStyles = makeStyles((theme) => ({
 // ----------------------------------------------------------------
 const AddNewItem = ({todoItems, setTodoItems}) => {
     const classes = useStyles();
-    let newItem = {};
+    const [textFieldValue, setTextFieldValue] = useState('');
 
     const addUpClickedHandler = () => {
-        newItem.id = Date.now();
-        newItem.check = false;
-        setTodoItems([newItem,...todoItems]);
+        const newItem = { id: Date.now(), check: false, title: textFieldValue };
+        setTodoItems([newItem, ...todoItems]);
     }
 
     const addDownClickedHandler = () => {
-        newItem.id = Date.now();
-        newItem.check = false;
+        const newItem = { id: Date.now(), check: false, title: textFieldValue };
         setTodoItems([...todoItems,newItem])
     }
     //-------------------------------------
@@ -37,8 +35,8 @@ const AddNewItem = ({todoItems, setTodoItems}) => {
             <form className={classes.form} noValidate autoComplete="off">
                 <TextField
                     fullWidth
-                    value={newItem.title}
-                    onChange={(m) => newItem.title = m.target.value}
+                    value={textFieldValue}
+                    onChange={e => setTextFieldValue(e.target.value)}
                     edge="begin"
                     id="standard-basic"
                     label="Todo Item"
