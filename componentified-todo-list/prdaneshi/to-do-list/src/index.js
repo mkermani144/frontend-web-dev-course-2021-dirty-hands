@@ -37,36 +37,27 @@ const App = () => {
     setItem([...items]);
   };
 
-  const CreatList = () => {
-    const result = Object.entries(items).map(List);
-    return result;
-  };
-
   const DeleteTask = (e, index) => {
     items.splice(index, 1);
     setItem([...items]);
   };
-  const List = (item) => {
-    return (
-      <li key={item[0]}>
-        <i
-          className="fa fa-trash"
-          onClick={(e) => DeleteTask(e, item[0])}
-          id={item[0]}
-        ></i>
-        <input
-          id={item[0]}
-          type="checkbox"
-          onChange={(e) => checkBoxClicked(e, item[0])}
-          checked={item[1].status}
-        />
-        <span>{item[1].task}</span>
-      </li>
-    );
-  };
+
   const [inputValue, setinputValue] = useState(0);
   const InputValue = (e) => {
     setinputValue(e.target.value);
+  };
+
+  const CreatList = () => {
+    const result = Object.entries(items).map((item) => (
+      <List
+        id={item[0]}
+        delete={(e) => DeleteTask(e, item[0])}
+        checkBoxClicked={(e, id) => checkBoxClicked(e, id)}
+        status={item[1].status}
+        task={item[1].task}
+      />
+    ));
+    return result;
   };
 
   return (
@@ -76,6 +67,25 @@ const App = () => {
       <button onClick={addToTop}> add to top</button>
       <ul>{CreatList()} </ul>
     </div>
+  );
+};
+
+const List = (item) => {
+  return (
+    <li key={item.id}>
+      <i
+        className="fa fa-trash"
+        onClick={(e) => item.delete(e, item.id)}
+        id={item.id}
+      ></i>
+      <input
+        id={item.id}
+        type="checkbox"
+        onChange={(e) => item.checkBoxClicked(e, item.id)}
+        checked={item.status}
+      />
+      <span>{item.task}</span>
+    </li>
   );
 };
 
