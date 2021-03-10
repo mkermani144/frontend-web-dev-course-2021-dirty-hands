@@ -11,8 +11,8 @@ import {
   ListItemSecondaryAction,
   TextField
 } from '@material-ui/core';
-import {Add, ArrowDownward, ArrowUpward, DeleteIcon} from '@material-ui/icons';
-import './App.css';
+import {Add, ArrowDownward, ArrowUpward} from '@material-ui/icons';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,14 +22,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundPositionX: '100%',
     backgroundPositionY: '100%',
     backgroundColor: '#3f3160',
-    margin: '40px auto',
-  },
-  body: {
-    backgroundColor: '#9266ff'
   },
   container:{
     width:'40%',
-    height: '80%',
+    height: '70%',
     overflowX: 'hidden',
     backgroundColor: theme.palette.common.white,
     boxShadow:theme.shadows[15],
