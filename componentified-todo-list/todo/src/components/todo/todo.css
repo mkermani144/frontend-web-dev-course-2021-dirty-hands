@@ -1,0 +1,10 @@
+.todoCheckbox {
+    margin-right: .6em;
+    width: 1.25em;
+    height: 1.25em;
+}
+
+.hide {
+    display: none;
+}
+
