@@ -7,7 +7,7 @@ const AddTodo = ({addTopHandler, addBottomHandler}) => {
         setTodoTitle(event.target.value);
     };
     const idGenerator = () =>{
-        return Math.abs(Math.random()*10000) ;
+        return Date.now() ;
     }
     const addTop = () => {
         if (todoTitle === "") {
