@@ -52,7 +52,7 @@ const TodoList = () => {
             <AddTodo addTopHandler={addTopHandler} addBottomHandler={addBottomHandler} />
             <div className="border border-info m-2 p-4">
                 <h2>To DO List</h2>
-                {todoList.map(t => <Todo key={t.title} todo={t} doneHandler={doneHandler} undoHandler={undoHandler} deleteHandler={deleteHandler}/>)}
+                {todoList.map(t => <Todo key={t.id} todo={t} doneHandler={doneHandler} undoHandler={undoHandler} deleteHandler={deleteHandler}/>)}
             </div>
             
         </>
