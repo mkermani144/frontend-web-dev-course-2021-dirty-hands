@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 
 const App = () => {
+  const [inputValue, setinputValue] = useState(0);
   let [items, setItem] = useState([
     { task: "first element", status: false },
     { task: "second element", status: true },
@@ -28,21 +29,22 @@ const App = () => {
   };
 
   const checkBoxClicked = (e, index) => {
-    console.log(index);
-    items[index].status = e.target.checked;
+    // console.log(index);
+    let newArray = [...items];
+    newArray[index].status = e.target.checked;
     if (e.target.checked) {
-      const checked = items.splice(index, 1);
-      items.push(checked[0]);
+      const checked = newArray.splice(index, 1);
+      newArray.push(checked[0]);
     }
-    setItem([...items]);
+    setItem([...newArray]);
   };
 
   const DeleteTask = (e, index) => {
-    items.splice(index, 1);
-    setItem([...items]);
+    let newArray = [...items];
+    newArray.splice(index, 1);
+    setItem([...newArray]);
   };
 
-  const [inputValue, setinputValue] = useState(0);
   const InputValue = (e) => {
     setinputValue(e.target.value);
   };
@@ -50,13 +52,14 @@ const App = () => {
   const CreatList = () => {
     const result = Object.entries(items).map((item) => (
       <List
-        id={item[0]}
+        id={new Date()}
         delete={(e) => DeleteTask(e, item[0])}
-        checkBoxClicked={(e, id) => checkBoxClicked(e, id)}
+        checkBoxClicked={(e) => checkBoxClicked(e, item[0])}
         status={item[1].status}
         task={item[1].task}
       />
     ));
+    console.log(result);
     return result;
   };
 
@@ -73,11 +76,7 @@ const App = () => {
 const List = (item) => {
   return (
     <li key={item.id}>
-      <i
-        className="fa fa-trash"
-        onClick={(e) => item.delete(e, item.id)}
-        id={item.id}
-      ></i>
+      <i className="fa fa-trash" onClick={item.delete} id={item.id}></i>
       <input
         id={item.id}
         type="checkbox"
