@@ -6,7 +6,7 @@ import {
   ListItemSecondaryAction,
   TextField
 } from '@material-ui/core';
-import {Add, ArrowDownward, ArrowUpward} from '@material-ui/icons'
+import {Add} from '@material-ui/icons'
 // ----------------------------------------------------------------
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -16,19 +16,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 // ----------------------------------------------------------------
-const AddNewItem = ({todoItems, setTodoItems}) => {
+const AddNewItem = () => {
     const classes = useStyles();
     const [textFieldValue, setTextFieldValue] = useState('');
 
-    const addUpClickedHandler = () => {
-        const newItem = { id: Date.now(), check: false, title: textFieldValue };
-        setTodoItems([newItem, ...todoItems]);
+    const addClickedHandler = () => {
+        fetch(`https://todolist.ehsan-rafee.ir/api/todolist/`,{
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ownerId: 5,
+                title: textFieldValue,
+                checked: false
+            })
+        })
+        .then((response) => response.json())
+        .then((responseJson) => console.log(responseJson))
     }
 
-    const addDownClickedHandler = () => {
-        const newItem = { id: Date.now(), check: false, title: textFieldValue };
-        setTodoItems([...todoItems,newItem])
-    }
+    // useEffect(()=>{
+    //     fetch(`http://127.0.0.1:8000/showform/${token}/${id}/`)
+    //     .then(response => {
+    //       return response.json();
+    //     }).then(response=>{
+    //       if(response.status === 200){
+    //         const fieldArray = Object.keys(response.fields).map((key) => response.fields[key]);
+    //         setFields(fieldArray);
+    //       }
+    //     });
+    //   },[])
+
     //-------------------------------------
     return (
         <ListItem dense>
@@ -45,16 +65,8 @@ const AddNewItem = ({todoItems, setTodoItems}) => {
                 <ListItemSecondaryAction>
                 <IconButton
                     edge="end"
-                    onClick={addUpClickedHandler}
+                    onClick={addClickedHandler}
                     aria-label="delete">
-                    <Add />
-                    <ArrowUpward />
-                </IconButton>
-                <IconButton
-                    edge="end"
-                    onClick={addDownClickedHandler}
-                    aria-label="delete">
-                    <ArrowDownward />
                     <Add />
                 </IconButton>
                 </ListItemSecondaryAction>

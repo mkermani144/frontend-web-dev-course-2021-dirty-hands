@@ -47,10 +47,7 @@ const App = () => {
             </Typography>
           </Grid>
 
-          <AddNewItem
-            todoItems={todoItems}
-            setTodoItems={setTodoItems}
-          />
+          <AddNewItem />
 
         </Grid>
 
