@@ -68,6 +68,8 @@ const App = () => {
             {todoItems.map(value => <TodoItem
                                       key={value.id}
                                       value={value}
+                                      todoItems={todoItems}
+                                      setTodoItems={setTodoItems}
                                     />)}
           </List>
         </Grid>

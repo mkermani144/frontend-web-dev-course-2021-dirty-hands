@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   ListItem,
   ListItemText,
@@ -8,8 +8,7 @@ import {
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 // ----------------------------------------------------------------
-const TodoItem = ({value}) => {
-    const [check, setCheck] = useState(false);
+const TodoItem = ({value, todoItems, setTodoItems}) => {
     const itemClickedHandler = () => {
         if (value.checked === false) {
             fetch(`https://todolist.ehsan-rafee.ir/api/todolist/${value.id}`,{
@@ -23,7 +22,12 @@ const TodoItem = ({value}) => {
                 })
             })
             .then(response => response.json())
-            .then(data => setCheck(true))
+            .then(data => {
+                const index = todoItems.findIndex(obj => obj.id === data.id);
+                var temp = [...todoItems];
+                temp[index].checked = true;
+                setTodoItems(temp);
+            })
             .catch(error => console.error(error))
     }
 }
@@ -36,6 +40,12 @@ const TodoItem = ({value}) => {
                 }
             })
             .then(response => response.json())
+            .then(data => {
+                const index = todoItems.findIndex(obj => obj.id === data.id);
+                const temp = [...todoItems];
+                temp.slice(index, 1);
+                setTodoItems(temp);
+            })
             .catch(error => console.error(error))
     }
     //-------------------------------------
@@ -47,7 +57,7 @@ const TodoItem = ({value}) => {
 
             <Checkbox
                 edge="start"
-                checked={value.checked||check}
+                checked={value.checked}
                 tabIndex={-1}
                 disableRipple
                 inputProps={{ 'aria-labelledby': value.id }}
