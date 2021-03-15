@@ -59,7 +59,10 @@ const App = () => {
             </Typography>
           </Grid>
 
-          <AddNewItem />
+          <AddNewItem
+            todoItems={todoItems}
+            setTodoItems={setTodoItems}
+          />
 
         </Grid>
 

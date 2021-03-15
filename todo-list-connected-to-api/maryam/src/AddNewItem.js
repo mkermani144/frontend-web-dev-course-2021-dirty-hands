@@ -16,11 +16,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 // ----------------------------------------------------------------
-const AddNewItem = () => {
+const AddNewItem = ({todoItems, setTodoItems}) => {
     const classes = useStyles();
     const [textFieldValue, setTextFieldValue] = useState('');
 
-    const addClickedHandler = async () => {
+    const addClickedHandler = () => {
         fetch(`https://todolist.ehsan-rafee.ir/api/todolist`,{
             method: 'POST',
             headers: {
@@ -33,6 +33,7 @@ const AddNewItem = () => {
             })
            })
         .then(response => response.json())
+        .then(data => setTodoItems([...todoItems, data]))
         .catch(error => console.error(error))
     }
     //-------------------------------------
