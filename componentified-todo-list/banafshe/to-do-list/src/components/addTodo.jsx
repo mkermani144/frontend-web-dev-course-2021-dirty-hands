@@ -1,40 +1,26 @@
 import React, { useState } from 'react';
+import {postTodo} from '../api/todoApi.js'
 
 
-const AddTodo = ({addTopHandler, addBottomHandler}) => {
+const AddTodo = ({addHandler}) => {
     const [todoTitle, setTodoTitle] = useState("");
     const handleInputChange = (event) => {
         setTodoTitle(event.target.value);
     };
-    const idGenerator = () =>{
-        return Date.now() ;
-    }
-    const addTop = () => {
+    
+    const add = () => {
         if (todoTitle === "") {
             alert("To-do Title is required")
             return
         }
             const todo = {
+                ownerId: 4,
                 title: todoTitle,
-                isCompleted: false,
-                id:idGenerator()
+                cheked: false,
             }
-            addTopHandler(todo)
+            addHandler(todo)
             setTodoTitle("")
-    }
-
-    const addBottom = () => {
-        if (todoTitle === "") {
-            alert("To-do Title is required")
-            return
-        }
-            const todo = {
-                title: todoTitle,
-                isCompleted: false,
-                id:idGenerator()
-            }
-            addBottomHandler(todo)
-            setTodoTitle("")
+            postTodo(todo)
     }
 
 
@@ -48,8 +34,8 @@ const AddTodo = ({addTopHandler, addBottomHandler}) => {
                   className="form-control " id="inputTask"
                    placeholder="Enter your task title here"/></div>
                  <div className="col-md-4 col-sm-12 my-2">
-                     <button type="button" className="btn btn-success mx-2 " onClick={addTop}>Add to Top</button>
-                     <button type="button" className="btn btn-warning  mx-2 " onClick={addBottom}>Add to Bottom</button>
+                     <button type="button" className="btn btn-success mx-2 " onClick={add}>Add</button>
+                     {/* <button type="button" className="btn btn-warning  mx-2 " onClick={addBottom}>Add to Bottom</button> */}
                     </div>
             </div>
             
