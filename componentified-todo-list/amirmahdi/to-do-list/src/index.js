@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Itemlist from './Itemlist';
@@ -6,6 +6,7 @@ import Itemlist from './Itemlist';
 
 
 const App = () => {
+
   const [inputItems, setInputItems] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const handleInputAdd = (event) => {
@@ -13,45 +14,66 @@ const App = () => {
       if(inputValue.length===0){
         return;
       }else{
-      const id = (inputItems.length)?inputItems[inputItems.length - 1].id +1 :0;
-      setInputItems([...inputItems, { id: id, value: inputValue, complete:false }]);
       setInputValue("");
-      }
-  }
-  const handleRemove = (id)=>{
-         setInputItems(inputItems.filter(item => item.id !==id));
+        const body=JSON.stringify({
+          ownerId: 3,
+          title: inputValue,
+          checked : false
+        });
+        const headers={
+          'Content-Type': 'application/json'
         }
-  const handleAddToBottom = (id)=>{
-      let newArray=[...inputItems];
-      let objectIndex = newArray.findIndex(obj=>obj.id ===id);
-      if(objectIndex!==newArray.length-1){
-        let temp=newArray[objectIndex];
-        newArray[objectIndex]=newArray[objectIndex+1];
-        newArray[objectIndex+1]=temp;
-        setInputItems([...newArray]);
-      }
+       fetch('https://todolist.ehsan-rafee.ir/api/todolist',{
+        method:'POST',
+         body,
+         headers,
+      })
+  };
+}
+  useEffect(
+    () => {
+      const sideEffect = async () => {
+      const response =await fetch('https://todolist.ehsan-rafee.ir/api/todolist')
+      const items=(await response.json()).filter((owner)=> owner.ownerId===3);
+    setInputItems(items);
     }
-  const handleAddToTop = (index) => {
-      let newArray=[...inputItems];
-      let objectIndex = newArray.findIndex(obj=>obj.id ===index);
-      if(objectIndex!==0){
-        let temp=newArray[objectIndex];
-        newArray[objectIndex]=newArray[objectIndex-1];
-        newArray[objectIndex-1]=temp;
-        setInputItems([...newArray]);
-      }
-    }
+    sideEffect();
+      },[])
+
+  const handleRemove = (id)=>{
+    const deleteurl='https://todolist.ehsan-rafee.ir/api/todolist/'+id;
+    const sideEffect = async () => {
+     await fetch(deleteurl,{
+        method:'DELETE'})
+        }
+    sideEffect();
+        }
     const handleDone = (event,id)=>{
         let done = inputItems.find(item =>item.id ===id);
-        if(event.target.checked===true){
-          done.complete=true
-         inputItems.sort((a,b)=>a.complete - b.complete)
-        }else{
-          done.complete=false;
-          inputItems.sort((a,b)=>a.complete - b.complete)
+        const headers={
+          'Content-Type': 'application/json'
         }
-        setInputItems([...inputItems]);
-      }
+        if(event.target.checked===true){
+          done.checked=true
+          inputItems.sort((a,b)=>a.checked - b.checked)
+        }else{
+          done.checked=false;
+          inputItems.sort((a,b)=>a.checked - b.checked)
+        }
+        const body=JSON.stringify({
+          title:done.title,
+          checked:done.checked
+        });
+      const deleteurl='https://todolist.ehsan-rafee.ir/api/todolist/'+id;
+      const sideEffect = async () => {
+      await fetch(deleteurl,{
+        method:'PUT',body,headers
+      })}
+      sideEffect()
+    }
+
+
+
     return (
       <div >
         { <form onSubmit={handleInputAdd}>
@@ -65,8 +87,8 @@ const App = () => {
 
           {inputItems.map(note =>(
            <li  key={note.id}>
-            <Itemlist toDo={note.value} id={note.id} complete={note.complete} deletetoDo={(id)=>handleRemove(id)}
-                    down={(id)=>handleAddToBottom(id)} top={(id)=>handleAddToTop(id)} done={(e,id)=>handleDone(e,id)} />
+            <Itemlist toDo={note.title} id={note.id} checked={note.checked} deletetoDo={(id)=>handleRemove(id)}
+                    /* down={(id)=>handleAddToBottom(id)} top={(id)=>handleAddToTop(id)}*/ done={(e,id)=>handleDone(e,id)} />
             </li>
           ))}
       </div>
@@ -79,3 +101,25 @@ ReactDOM.render(
 );
 
 
+
+
+// const handleAddToBottom = (id)=>{
+  //     let newArray=[...inputItems];
+  //     let objectIndex = newArray.findIndex(obj=>obj.id ===id);
+  //     if(objectIndex!==newArray.length-1){
+  //       let temp=newArray[objectIndex];
+  //       newArray[objectIndex]=newArray[objectIndex+1];
+  //       newArray[objectIndex+1]=temp;
+  //       setInputItems([...newArray]);
+  //     }
+//}
+// const handleAddToTop = (index) => {
+//     let newArray=[...inputItems];
+//     let objectIndex = newArray.findIndex(obj=>obj.id ===index);
+//     if(objectIndex!==0){
+//       let temp=newArray[objectIndex];
+//       newArray[objectIndex]=newArray[objectIndex-1];
+//       newArray[objectIndex-1]=temp;
+//       setInputItems([...newArray]);
+//     }
+//   }
