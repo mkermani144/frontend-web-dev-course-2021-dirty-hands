@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import AddTodo from "./addTodo";
 import Todo from "./todo";
-import {getAllTodos,getTodoById,deleteTodo,updateTodo} from '../api/todoApi.js'
+import {getAllTodos,getTodoById,deleteTodo,updateTodo,postTodo} from '../api/todoApi.js'
 
 const TodoList = () => {
     const todoList = getAllTodos;
     const addHandler = (todo) => {
-           setTodoList([todo, ...todoList])
+           postTodo(todo)
     }
     const doneHandler = (id) => {
     

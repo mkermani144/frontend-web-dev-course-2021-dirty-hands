@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import {postTodo} from '../api/todoApi.js'
 
 
 const AddTodo = ({addHandler}) => {
@@ -20,7 +19,7 @@ const AddTodo = ({addHandler}) => {
             }
             addHandler(todo)
             setTodoTitle("")
-            postTodo(todo)
+            
     }
 
 
