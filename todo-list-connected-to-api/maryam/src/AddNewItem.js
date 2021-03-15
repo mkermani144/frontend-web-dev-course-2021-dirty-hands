@@ -20,35 +20,21 @@ const AddNewItem = () => {
     const classes = useStyles();
     const [textFieldValue, setTextFieldValue] = useState('');
 
-    const addClickedHandler = () => {
-        fetch(`https://todolist.ehsan-rafee.ir/api/todolist/`,{
+    const addClickedHandler = async () => {
+        fetch(`https://todolist.ehsan-rafee.ir/api/todolist`,{
             method: 'POST',
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type':'application/json'
             },
             body: JSON.stringify({
-                ownerId: 5,
                 title: textFieldValue,
+                ownerId: "5",
                 checked: false
             })
-        })
-        .then((response) => response.json())
-        .then((responseJson) => console.log(responseJson))
+           })
+        .then(response => response.json())
+        .catch(error => console.error(error))
     }
-
-    // useEffect(()=>{
-    //     fetch(`http://127.0.0.1:8000/showform/${token}/${id}/`)
-    //     .then(response => {
-    //       return response.json();
-    //     }).then(response=>{
-    //       if(response.status === 200){
-    //         const fieldArray = Object.keys(response.fields).map((key) => response.fields[key]);
-    //         setFields(fieldArray);
-    //       }
-    //     });
-    //   },[])
-
     //-------------------------------------
     return (
         <ListItem dense>

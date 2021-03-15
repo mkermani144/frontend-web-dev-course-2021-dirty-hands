@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ListItem,
   ListItemText,
@@ -8,23 +8,35 @@ import {
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 // ----------------------------------------------------------------
-const TodoItem = ({value, todoItems, setTodoItems}) => {
-
+const TodoItem = ({value}) => {
+    const [check, setCheck] = useState(false);
     const itemClickedHandler = () => {
-        const temp = [...todoItems];
-        if (value.check === false) {
-            const itemIndex = temp.findIndex(x => x.id === value.id);
-            temp[itemIndex].check = true;
-            temp.push(temp.splice(itemIndex,1)[0]);
-            setTodoItems([...temp]);
-        }
+        if (value.checked === false) {
+            fetch(`https://todolist.ehsan-rafee.ir/api/todolist/${value.id}`,{
+                method: 'PUT',
+                headers: {
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                    title: value.title,
+                    checked: true
+                })
+            })
+            .then(response => response.json())
+            .then(data => setCheck(true))
+            .catch(error => console.error(error))
     }
+}
 
     const deleteClickedHandler = () => {
-        const currentIndex = todoItems.findIndex(x => x.id === value.id);
-        const temp = [...todoItems];
-        temp.splice(currentIndex, 1);
-        setTodoItems([...temp]);
+        fetch(`https://todolist.ehsan-rafee.ir/api/todolist/${value.id}`,{
+                method: 'DELETE',
+                headers: {
+                    'Content-Type':'application/json'
+                }
+            })
+            .then(response => response.json())
+            .catch(error => console.error(error))
     }
     //-------------------------------------
     return (
@@ -35,7 +47,7 @@ const TodoItem = ({value, todoItems, setTodoItems}) => {
 
             <Checkbox
                 edge="start"
-                checked={value.check}
+                checked={value.checked||check}
                 tabIndex={-1}
                 disableRipple
                 inputProps={{ 'aria-labelledby': value.id }}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   makeStyles,
   Grid,
@@ -35,6 +35,18 @@ const App = () => {
   const classes = useStyles();
   const [todoItems, setTodoItems] = useState([]);
 
+  useEffect(() => {
+    fetch(`https://todolist.ehsan-rafee.ir/api/todolist`,{
+      method: 'GET',
+      headers: {
+          'Content-Type':'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => setTodoItems(data.flatMap(e => e.ownerId === 5 ? e : [])))
+    .catch(error => console.error(error))}
+  ,[todoItems]);
+
   return(
     <Grid container alignItems="center" justify="center" direction="column" className={classes.root}>
       <Grid container alignItems="stretch" className={classes.container}>
@@ -56,8 +68,6 @@ const App = () => {
             {todoItems.map(value => <TodoItem
                                       key={value.id}
                                       value={value}
-                                      todoItems={todoItems}
-                                      setTodoItems={setTodoItems}
                                     />)}
           </List>
         </Grid>
