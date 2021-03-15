@@ -9,6 +9,7 @@ const App = () => {
 
   const [inputItems, setInputItems] = useState([]);
   const [inputValue, setInputValue] = useState("");
+
   const handleInputAdd = (event) => {
       event.preventDefault();
       if(inputValue.length===0){
@@ -27,7 +28,11 @@ const App = () => {
         method:'POST',
          body,
          headers,
-      })
+      }).then(
+        res=>res.json()
+      ).then(
+        data=>setInputItems([...inputItems,data])
+      )
   };
 }
   useEffect(
@@ -46,6 +51,7 @@ const App = () => {
      await fetch(deleteurl,{
         method:'DELETE'})
         }
+        setInputItems(inputItems.filter(item => item.id !==id));
     sideEffect();
         }
     const handleDone = (event,id)=>{
@@ -69,10 +75,9 @@ const App = () => {
       await fetch(deleteurl,{
         method:'PUT',body,headers
       })}
+      setInputItems([...inputItems]);
       sideEffect()
     }
-
-
 
     return (
       <div >
