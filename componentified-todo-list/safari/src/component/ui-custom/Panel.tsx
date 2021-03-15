@@ -2,6 +2,7 @@ import React from 'react';
 import {
     Card, CardHeader, Divider, Grid, CardContent
 } from '@material-ui/core';
+import {makeStyles} from "@material-ui/core/styles";
 
 export interface PanelProps {
     title?: string | null;
@@ -9,8 +10,16 @@ export interface PanelProps {
     children: any;
 }
 
+const useStyles = makeStyles({
+    card: {
+        marginTop: '2rem'
+    },
+});
+
 const Panel: React.FC<PanelProps> = ({ title, subheader, children }) => {
-    return <Card style={{ marginTop: '2%' }}>
+    const classes = useStyles();
+
+    return <Card className={classes.card}>
         <CardHeader title={title ? title : ''} subheader={subheader ? subheader : ''} />
         <Divider />
         <CardContent>

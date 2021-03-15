@@ -2,64 +2,60 @@ import React, {useEffect, useState} from "react";
 import NewTask from "./NewTask";
 import ActiveTaskList from "./ActiveTaskList";
 import DoneTaskList from "./DoneTaskList";
+import {fetchAllTodos, postNewTodo, updateTodo, deleteTodo} from '../service/todoService'
 
 const TaskApp: React.FC<any> = () => {
-    const [tasks, setTasks] = useState<TaskStruct[]>([])
+    const [tasks, setTasks] = useState<TodoModel[]>([])
 
-    const addNewItemTop = (subject: string) => {
-        const task: TaskStruct = {
-            id: Math.floor(Math.random() * 101),
-            subject: subject,
-            isDone: false
+    const addNewItem = (subject: string) => {
+        const task: TodoModel = {
+            id: "",
+            ownerId: 6,
+            title: subject,
+            checked: false
         };
 
-        setTasks([task, ...tasks])
+        postNewTodo(task)
+            .then(_ => fetchAllTodos())
+            .catch((error) => console.log(error))
     }
 
-    const doneTask = (id: number) => {
+    const doneTask = (id: string) => {
         const todos = [...tasks];
         const index = todos.findIndex(task => task.id === id)
-        todos[index].isDone = true
+        const todoForUpdate = todos[index]
 
-        setTasks(todos)
+        todoForUpdate.checked = true
+
+        const doneTask: TodoUpdateModel = {
+            title: todoForUpdate.title,
+            checked: true
+        }
+
+        updateTodo(doneTask, id)
+            .then(_ => fetchAllTodos())
+            .catch((error) => console.log(error))
     }
 
-    const addNewItemBottom = (subject: string) => {
-        const task: TaskStruct = {
-            id: Math.floor(Math.random() * 101),
-            subject: subject,
-            isDone: false
-        };
-
-        setTasks([...tasks, task])
+    const deleteTask = (id: string) => {
+        deleteTodo(id).then(_ => fetchAllTodos())
+            .catch((error) => console.log(error))
     }
 
-    useEffect(() =>
-        setTasks([
-                {
-                    id: Math.floor(Math.random() * 101),
-                    subject: "Doing homeworks",
-                    isDone: true
-                },
-                {
-                    id: Math.floor(Math.random() * 101),
-                    subject: "Drinking cups of coffee",
-                    isDone: false
-                },
-                {
-                    id: Math.floor(Math.random() * 101),
-                    subject: "Listening to ChannelB",
-                    isDone: false
-                }
-            ]
-        ), []
-    )
+
+    const fetchTasks = () => {
+        fetchAllTodos()
+            .then((result: TodoModel[]) => setTasks(result))
+            .catch((error) => console.log(error))
+    }
+
+    useEffect(() => fetchTasks(), [tasks])
 
     return (
         <>
-            <NewTask addTop={addNewItemTop} addBottom={addNewItemBottom}/>
-            <ActiveTaskList tasks={tasks} deleteFunction={doneTask}/>
-            <DoneTaskList tasks={tasks}/>
+            <NewTask addNewTodoHandler={addNewItem}/>
+            <ActiveTaskList tasks={tasks} doneFunction={doneTask}/>
+            <DoneTaskList tasks={tasks} deleteFunction={deleteTask}/>
         </>
     )
 }

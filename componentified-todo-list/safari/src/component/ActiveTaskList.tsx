@@ -4,15 +4,15 @@ import Task from "./Task";
 
 
 interface TaskListProps {
-    tasks: TaskStruct[]
-    deleteFunction: any | null
+    tasks: TodoModel[]
+    doneFunction: any | null
 }
 
-const ActiveTaskList: React.FC<TaskListProps> = ({tasks, deleteFunction}) => {
+const ActiveTaskList: React.FC<TaskListProps> = ({tasks, doneFunction}) => {
     return (
         <Panel title="Tasks" subheader="Active Tasks">
-            {tasks.filter(task => !task.isDone).map((task: TaskStruct) =>
-                <Task key={task.id} task={task} deleteTasks={deleteFunction} />
+            {tasks.filter(task => !task.checked).map((task: TodoModel) =>
+                <Task key={task.id} task={task} deleteTask={null}  done={doneFunction}/>
             )}
         </Panel>
     )

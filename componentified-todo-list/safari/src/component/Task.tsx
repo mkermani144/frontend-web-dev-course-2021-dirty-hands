@@ -7,8 +7,9 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 interface TaskProps {
-    task: TaskStruct
-    deleteTasks: any | null
+    task: TodoModel
+    done: any | null
+    deleteTask: any | null
 }
 
 const useStyles = makeStyles({
@@ -16,24 +17,31 @@ const useStyles = makeStyles({
         minWidth: 275,
         margin: '0 5px',
     },
+    cardContent: {
+        backgroundColor: (task: TodoModel) => task.checked ? 'orangered' : 'lightgreen',
+        minHeight: '100px'
+    },
+    cardAction: {
+        background: "gray"
+    }
 });
 
-const Task: React.FC<TaskProps> = ({task, deleteTasks}) => {
-    const classes = useStyles();
-
-    const taskStyle = task.isDone ? 'orangered' : 'lightgreen'
+const Task: React.FC<TaskProps> = ({task, done, deleteTask}) => {
+    const classes = useStyles(task);
 
     return(
         <Card className={classes.root} variant="outlined">
-            <CardContent style={{background: taskStyle, minHeight: '100px'}}>
+            <CardContent className={classes.cardContent}>
                 <Typography variant="body2" component="p">
-                    {task.subject}
+                    {task.title}
                 </Typography>
             </CardContent>
             {
-                !task.isDone ? <CardActions style={{background: "gray"}}>
-                    <Button onClick={e => deleteTasks(task.id)} size="small">Done</Button>
-                </CardActions> : null
+                !task.checked ? <CardActions className={classes.cardAction}>
+                    <Button onClick={() => done(task.id)} size="small">Done</Button>
+                </CardActions> : <CardActions className={classes.cardAction}>
+                    <Button onClick={() => deleteTask(task.id)} size="small">Done</Button>
+                </CardActions>
             }
 
         </Card>
