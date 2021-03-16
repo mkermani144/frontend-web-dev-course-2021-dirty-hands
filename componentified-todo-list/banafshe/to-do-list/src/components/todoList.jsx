@@ -4,7 +4,16 @@ import Todo from "./todo";
 import {getAllTodos,getTodoById,deleteTodo,updateTodo,postTodo} from '../api/todoApi.js'
 
 const TodoList = () => {
-    const todoList = getAllTodos;
+    const allTtodoList = [getAllTodos];
+    const [todoList, setTodoList] = useState([]);
+    allTtodoList.forEach(element => {
+        if (element.ownerId ===4){
+            const todos=[element,...todoList]
+            setTodoList(todos)
+        }
+        
+    });
+    
     const addHandler = (todo) => {
            postTodo(todo)
     }
@@ -16,7 +25,6 @@ const TodoList = () => {
             cheked:true,            
         }
         updateTodo(updatedTodo,id)
-
     }
     const undoHandler = (id) => {
 
@@ -28,8 +36,6 @@ const TodoList = () => {
         updateTodo(updatedTodo,id);
     }
     const deleteHandler = (id) => {
-      
-        const todo = getTodoById(id);
         deleteTodo(id);
     }
 
