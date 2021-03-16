@@ -50,16 +50,16 @@ const App = () => {
   };
 
   const CreatList = () => {
-    const result = Object.entries(items).map((item) => (
+    const result = Object.entries(items).map((item, keys) => (
       <List
-        id={new Date()}
+        id={keys}
         delete={(e) => DeleteTask(e, item[0])}
         checkBoxClicked={(e) => checkBoxClicked(e, item[0])}
         status={item[1].status}
         task={item[1].task}
       />
     ));
-    console.log(result);
+
     return result;
   };
 
